@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+
 export const EventCard = (props: any) => {
   const { event } = props;
   const { id, name, date_starts, date_ends } = event;
@@ -8,7 +10,7 @@ export const EventCard = (props: any) => {
       <p>Id: {id}</p>
       <p>Starts: {date_starts}</p>
       <p>Ends: {date_ends}</p>
-      {/* <Link to={`/events/${id}`}>View</Link> */}
+      <Link to={`/events/${id}`}>View</Link>
     </div>
   );
 };
