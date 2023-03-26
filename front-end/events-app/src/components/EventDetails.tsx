@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Navigate, useParams } from "react-router-dom";
+import { Participant } from "./Participant";
 
 export const EventDetails = () => {
   const { id } = useParams();
@@ -35,7 +36,10 @@ export const EventDetails = () => {
       <p>Id: {event.id}</p>
       <p>Starts: {event.date_starts}</p>
       <p>Ends: {event.date_ends}</p>
-      <p>Participants: {event.participants.length}</p>
+      <h2>Participants:</h2>
+      {event.participants.map((participant: any) => (
+        <Participant key={participant.id} participant={participant} />
+      ))}
     </>
   );
 };
