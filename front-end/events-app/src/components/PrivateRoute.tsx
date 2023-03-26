@@ -5,6 +5,7 @@ export function PrivateRoute({ children }: any) {
   const isLoggedIn = token ? true : false;
 
   if (!isLoggedIn) {
+    localStorage.setItem("redirect", window.location.pathname);
     return <Navigate to="/login" />;
   }
 

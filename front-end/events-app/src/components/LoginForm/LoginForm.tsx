@@ -22,16 +22,11 @@ export const LoginForm = () => {
       .post("http://localhost:5000/login", { name: name, password: password })
       .then((response) => {
         localStorage.setItem("token", response.data.token);
-        // props.history.push("/events");
-        navigate("/events");
+        const lastLocation = localStorage.getItem("redirect") || "/events";
+        localStorage.removeItem("redirect");
+        navigate(lastLocation);
       });
   };
-
-  useEffect(() => {
-    if (localStorage.getItem("token")) {
-      // props.history.push("/events");
-    }
-  }, []);
 
   return (
     <>
