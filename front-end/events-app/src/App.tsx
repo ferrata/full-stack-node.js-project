@@ -5,6 +5,7 @@ import { Header } from "./components/Header";
 import { LoginForm } from "./components/LoginForm/LoginForm";
 import { Logout } from "./components/Logout";
 import { NotFoundPage } from "./components/NotFoundPage";
+import { PrivateRoute } from "./components/PrivateRoute";
 
 export const App = () => {
   return (
@@ -14,8 +15,22 @@ export const App = () => {
       <Routes>
         <Route index element={<Navigate to="/events" />} />
         <Route path="/login" element={<LoginForm />} />
-        <Route path="/events" element={<Events />} />
-        <Route path="/events/:id" element={<EventDetails />} />
+        <Route
+          path="/events"
+          element={
+            <PrivateRoute>
+              <Events />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/events/:id"
+          element={
+            <PrivateRoute>
+              <EventDetails />
+            </PrivateRoute>
+          }
+        />
         <Route path="/logout" element={<Logout />} />
         <Route path="/*" element={<NotFoundPage />} />
       </Routes>
