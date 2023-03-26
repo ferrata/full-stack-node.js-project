@@ -2,8 +2,6 @@ export const User = (props: any) => {
   const { user } = props;
   const { id, name, surname, email, date_of_birth, age } = user;
 
-  console.log(user);
-
   return (
     <>
       <h2>

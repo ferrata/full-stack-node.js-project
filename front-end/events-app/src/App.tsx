@@ -1,4 +1,5 @@
 import { Navigate, Route, Routes } from "react-router-dom";
+import { CreateUser } from "./components/CreateUser";
 import { EventDetails } from "./components/EventDetails";
 import { Events } from "./components/Events";
 import { Header } from "./components/Header";
@@ -37,6 +38,14 @@ export const App = () => {
           element={
             <PrivateRoute>
               <Users />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/users/create"
+          element={
+            <PrivateRoute>
+              <CreateUser />
             </PrivateRoute>
           }
         />
