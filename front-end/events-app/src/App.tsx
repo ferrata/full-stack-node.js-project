@@ -6,6 +6,7 @@ import { LoginForm } from "./components/LoginForm/LoginForm";
 import { Logout } from "./components/Logout";
 import { NotFoundPage } from "./components/NotFoundPage";
 import { PrivateRoute } from "./components/PrivateRoute";
+import { Users } from "./components/Users";
 
 export const App = () => {
   return (
@@ -28,6 +29,14 @@ export const App = () => {
           element={
             <PrivateRoute>
               <EventDetails />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/users"
+          element={
+            <PrivateRoute>
+              <Users />
             </PrivateRoute>
           }
         />
