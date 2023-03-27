@@ -23,7 +23,12 @@ export const Participant = (props: any) => {
               <Link variant="body2" color="text.secondary" href={email}>
                 {email}
               </Link>
-              <Typography variant="body2" color="text.secondary">
+              <br />
+              <Typography
+                component="span"
+                variant="body2"
+                color="text.secondary"
+              >
                 Registered {new Date(date_of_registration).toDateString()}
               </Typography>
             </>
