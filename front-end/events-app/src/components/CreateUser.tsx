@@ -1,5 +1,18 @@
+import {
+  Button,
+  Checkbox,
+  Input,
+  InputLabel,
+  List,
+  ListItem,
+  ListItemButton,
+  ListItemIcon,
+  ListItemText,
+  Typography,
+} from "@mui/material";
+import { Box } from "@mui/system";
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { MouseEventHandler, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 export const CreateUser = () => {
@@ -8,7 +21,7 @@ export const CreateUser = () => {
     surname: "",
     email: "",
     date_of_birth: "",
-    age: 0,
+    age: "",
     event_ids: [],
   });
   const [events, setEvents] = useState([]);
@@ -33,21 +46,29 @@ export const CreateUser = () => {
       newUser = { ...newUser, age };
     }
 
-    if (e.target.name === "events") {
-      const event_ids = Array.from(e.target.selectedOptions).map(
-        (option: any) => parseInt(option.value)
-      );
-      console.log(event_ids);
+    setUser(newUser);
+  };
 
-      delete newUser.events;
-      newUser = { ...newUser, event_ids };
+  const handleEventToggle = (
+    id: number
+  ): MouseEventHandler<HTMLDivElement> | undefined => {
+    const selectedEvents = user.event_ids;
+    const currentIndex = selectedEvents.indexOf(id);
+    const newSelectedEvents = [...selectedEvents];
+
+    if (currentIndex === -1) {
+      newSelectedEvents.push(id);
+    } else {
+      newSelectedEvents.splice(currentIndex, 1);
     }
 
-    setUser(newUser);
+    setUser({ ...user, event_ids: newSelectedEvents });
+    return;
   };
 
   const handleSubmit = (e: any) => {
     e.preventDefault();
+
     axios
       .post("http://localhost:5000/users", user, {
         headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
@@ -63,60 +84,124 @@ export const CreateUser = () => {
 
   return (
     <>
-      <h1>Create User</h1>
-      <form onSubmit={handleSubmit}>
-        <label htmlFor="name">Name</label>
-        <input
-          type="text"
-          name="name"
-          value={user.name}
-          onChange={handleChange}
-        />
+      <Typography
+        variant="h1"
+        component="h1"
+        sx={{ textAlign: "center", margin: "1rem" }}
+      >
+        Create User
+      </Typography>
 
-        <label htmlFor="surname">Surname</label>
-        <input
-          type="text"
-          name="surname"
-          value={user.surname}
-          onChange={handleChange}
-        />
+      <Box
+        component="form"
+        display="flex"
+        justifyContent="center"
+        alignItems="top"
+        flexDirection={{ xs: "column", sm: "row" }}
+        noValidate
+        autoComplete="off"
+        onSubmit={handleSubmit}
+      >
+        <Box
+          sx={{
+            "& > :not(style)": { m: 2, width: "23ch", display: "block" },
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            flexDirection: "column",
+          }}
+        >
+          <Input
+            placeholder="First Name"
+            type="text"
+            name="name"
+            value={user.name}
+            onChange={handleChange}
+          />
 
-        <label htmlFor="email">Email</label>
-        <input
-          type="email"
-          name="email"
-          value={user.email}
-          onChange={handleChange}
-        />
+          <Input
+            placeholder="Last Name"
+            type="text"
+            name="surname"
+            value={user.surname}
+            onChange={handleChange}
+          />
 
-        <label htmlFor="date_of_birth">Date of Birth</label>
-        <input
-          type="date"
-          name="date_of_birth"
-          value={user.date_of_birth}
-          onChange={handleChange}
-        />
+          <Input
+            placeholder="Email"
+            type="email"
+            name="email"
+            value={user.email}
+            onChange={handleChange}
+          />
 
-        <label htmlFor="age">Age</label>
-        <input
-          type="number"
-          name="age"
-          value={user.age}
-          readOnly // age is calculated and not stored in the backend database
-          onChange={handleChange}
-        />
+          <Input
+            placeholder="Date of Birth"
+            type="date"
+            name="date_of_birth"
+            value={user.date_of_birth}
+            onChange={handleChange}
+          />
+          <InputLabel htmlFor="age">Age</InputLabel>
+          <Input disabled name="age" value={user.age} />
+        </Box>
 
-        <label htmlFor="events">Events</label>
-        <select name="events" multiple onChange={handleChange}>
-          {events.map((event: any) => (
-            <option key={event.id} value={event.id}>
-              {event.name}
-            </option>
-          ))}
-        </select>
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: { xs: "center", sm: "flex-start" },
+            alignItems: { xs: "center", sm: "flex-start" },
+            flexDirection: "column",
+            width: { xs: "100%", sm: "50%" },
+            marginLeft: { xs: "0", sm: "2rem" },
+          }}
+        >
+          <InputLabel htmlFor="events">Events</InputLabel>
 
-        <button>Create User</button>
-      </form>
+          <List onChange={handleChange}>
+            {events.map((event: any) => {
+              const labelId = `checkbox-list-label-${event.id}`;
+
+              return (
+                <ListItem key={event.id} disablePadding>
+                  <ListItemButton
+                    role={undefined}
+                    onClick={(e) => handleEventToggle(event.id)}
+                    dense
+                  >
+                    <ListItemIcon>
+                      <Checkbox
+                        edge="start"
+                        checked={user.event_ids.indexOf(event.id) !== -1}
+                        tabIndex={-1}
+                        disableRipple
+                      />
+                    </ListItemIcon>
+                    <ListItemText id={labelId} primary={event.name} />
+                  </ListItemButton>
+                </ListItem>
+              );
+            })}
+          </List>
+        </Box>
+      </Box>
+
+      <Box
+        display="flex"
+        justifyContent="center"
+        alignItems="center"
+        flexDirection="row"
+        sx={{ margin: "1rem" }}
+      >
+        <Button
+          variant="contained"
+          type="submit"
+          onClick={handleSubmit}
+          sx={{ margin: "1rem" }}
+        >
+          Create User
+        </Button>
+      </Box>
     </>
   );
 };

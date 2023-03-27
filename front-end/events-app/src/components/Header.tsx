@@ -1,11 +1,23 @@
+import { AppBar, Box, Button, Toolbar } from "@mui/material";
 import { NavLink } from "react-router-dom";
 
 export const Header = () => {
   return (
     <nav>
-      <NavLink to="/events">Events</NavLink>
-      <NavLink to="/users">Users</NavLink>
-      <NavLink to="/logout">Logout</NavLink>
+      <AppBar position="static">
+        <Toolbar>
+          <Button color="inherit" component={NavLink} to="/events">
+            Events
+          </Button>
+          <Button color="inherit" component={NavLink} to="/users">
+            Users
+          </Button>
+          <Box sx={{ flexGrow: 1 }} />
+          <Button color="inherit" component={NavLink} to="/logout">
+            Logout
+          </Button>
+        </Toolbar>
+      </AppBar>
     </nav>
   );
 };
