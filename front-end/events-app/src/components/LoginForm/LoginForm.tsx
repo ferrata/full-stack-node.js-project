@@ -1,5 +1,8 @@
+import { Button } from "@mui/material";
+import Box from "@mui/material/Box";
+import Input from "@mui/material/Input";
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 export const LoginForm = () => {
@@ -22,28 +25,39 @@ export const LoginForm = () => {
       .post("http://localhost:5000/login", { name: name, password: password })
       .then((response) => {
         localStorage.setItem("token", response.data.token);
-        // props.history.push("/events");
-        navigate("/events");
+        const lastLocation = localStorage.getItem("redirect") || "/events";
+        localStorage.removeItem("redirect");
+        navigate(lastLocation);
       });
   };
 
-  useEffect(() => {
-    if (localStorage.getItem("token")) {
-      // props.history.push("/events");
-    }
-  }, []);
-
   return (
     <>
-      <form onSubmit={handleSubmit}>
-        <label htmlFor="name">Name</label>
-        <input value={name} onChange={handleChange} />
+      <Box
+        component="form"
+        sx={{
+          "& > :not(style)": { m: 2, width: "23ch", display: "block" },
+        }}
+        display="flex"
+        justifyContent="center"
+        alignItems="center"
+        flexDirection="column"
+        height="50vh"
+        noValidate
+        autoComplete="off"
+        onSubmit={handleSubmit}
+      >
+        <Input value={name} onChange={handleChange} placeholder="Name" />
 
-        <label htmlFor="password">Password</label>
-        <input value={password} onChange={handlePasswordChange} />
+        <Input
+          value={password}
+          onChange={handlePasswordChange}
+          placeholder="Password"
+          type="password"
+        />
 
-        <button>Login</button>
-      </form>
+        <Button type="submit">Login</Button>
+      </Box>
     </>
   );
 };
