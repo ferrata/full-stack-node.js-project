@@ -9,7 +9,7 @@ import { Link } from "react-router-dom";
 
 export const EventCard = (props: any) => {
   const { event } = props;
-  const { id, name, date_starts, date_ends } = event;
+  const { id, name, date_starts, date_ends, event_img_url } = event;
 
   return (
     <Card
@@ -26,8 +26,7 @@ export const EventCard = (props: any) => {
       <CardMedia
         component="img"
         height="140"
-        image="https://source.unsplash.com/random" // TODO: replace with the corresponding property
-        alt="green iguana"
+        image={event_img_url || "https://source.unsplash.com/random"}
       />
 
       <CardHeader title={name} />

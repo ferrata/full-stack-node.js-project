@@ -50,7 +50,7 @@ export const EventDetails = () => {
         >
           <Box
             component="img"
-            src={"https://source.unsplash.com/random"} // TODO: replace with the corresponding property
+            src={event.event_img_url || "https://source.unsplash.com/random"}
             sx={{
               width: "100%",
               maxHeight: "500px",
